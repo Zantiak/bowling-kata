@@ -1,47 +1,12 @@
 package main.domain;
 
-import static main.constants.AppConstants.PERFECT_SCORE;
+import static main.constants.AppConstants.MISS;
+import static main.constants.AppConstants.SPARE;
 import static main.constants.AppConstants.STRIKE;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import main.service.LineOperations;
-
-public class Line implements LineOperations {
+public class Line {
 
   private Integer lineScore;
-
-  /*
-    Method to get the total bowling score
-  */
-  @Override
-  public Integer sumFrames(ArrayList<Frame> frames){
-
-    if(frames.stream().allMatch(frame -> frame.getFirstThrow().equalsIgnoreCase(STRIKE)))
-      return PERFECT_SCORE;
-
-    return 0;
-  }
-
-  @Override
-  public ArrayList<Frame> parseScoreCard(String scoreCard) {
-
-//    StringTokenizer stringTokenizer = new StringTokenizer(scoreCard, " ");
-//    String[] frames = scoreCard.split(" ");
-    ArrayList<Frame> frameCollection = new ArrayList<>();
-    List<String> frameList = Arrays.asList(scoreCard.trim().split(" "));
-
-    int score = 0;
-
-    for (String frameS:frameList) {
-      if(frameS.equalsIgnoreCase(STRIKE)){
-        frameCollection.add(new Frame(STRIKE,null));
-      }
-    }
-
-    return frameCollection;
-  }
 
   /**
    * Return the total score of a Line.
@@ -51,7 +16,7 @@ public class Line implements LineOperations {
    */
   public int getLineTotalScore(String scoreCard) {
     int totalPoints = 0;
-    String noSpacesSC = scoreCard.trim().replaceAll("-", "0")
+    String noSpacesSC = scoreCard.trim().replaceAll(MISS, "0")
         .replaceAll("\\s+","");
 
     char[] charArraySC = noSpacesSC.toCharArray();
@@ -67,13 +32,13 @@ public class Line implements LineOperations {
         fScore += Character.getNumericValue(rollPoints);
         //else it only can be a STRIKE or a SPARE, call the function to resolve appropriately
       } else {
-        if(rollPoints == 'X') {
+        if(rollPoints == STRIKE) {
           //Resolve the total points after a STRIKE
           fScore += 10;
           //Verify the case when we have a STRIKE before the last shot
           if(i <= charArraySC.length - 3){
             fScore += Character.isDigit(charArraySC[i+1]) ? Character.getNumericValue(charArraySC[i+1]) : 10;
-            if(charArraySC[i+2] == '/')
+            if(charArraySC[i+2] == SPARE)
               fScore += 10 - Character.getNumericValue(charArraySC[i+1]);
             else
               fScore += Character.isDigit(charArraySC[i+2]) ? Character.getNumericValue(charArraySC[i+2]) : 10;
@@ -90,7 +55,7 @@ public class Line implements LineOperations {
         }
       }
       //sum the total points
-      if (j == 2 || rollPoints == 'X'){
+      if (j == 2 || rollPoints == STRIKE){
         totalPoints += fScore;
         j = 0;
         fScore = 0;
@@ -98,6 +63,5 @@ public class Line implements LineOperations {
     }
     return totalPoints;
   }
-
 
 }

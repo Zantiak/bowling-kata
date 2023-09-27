@@ -1,11 +1,7 @@
 package tests;
 
 import static main.constants.AppConstants.PERFECT_SCORE;
-import static main.constants.AppConstants.STRIKE;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import main.domain.Frame;
 import main.domain.Line;
 
 public class TestBowlingKataApplication {
@@ -19,7 +15,6 @@ public class TestBowlingKataApplication {
   String randomScore2 = "8- 5/ 35 81 71 X 9/ X X 8/6";          // Total score is: 150
 
   final Line line = new Line();
-  final Frame frameStrike = new Frame(STRIKE, null);
 
   public static void main(String[] args) {
 
@@ -97,85 +92,5 @@ public class TestBowlingKataApplication {
     System.out.println("TestBowlingKataApplication.testRandomScore PASSED");
 
   }
-
-
-
-  public void testParseScoreCardPerfectScore() {
-    Frame frame = new Frame("X", null);
-    ArrayList<Frame> frameCollection = new ArrayList<>();
-
-    // Create a frame collection of a perfect score
-    for(int i = 0; i < 12; i++) {
-      frameCollection.add(frame);
-    }
-
-    // Call the method to parse the String with the score
-    ArrayList<Frame> parsedFrame = line.parseScoreCard(perfectScore);
-
-    // Assertion, check that both Lists contains the same elements
-    assert frameCollection.equals(parsedFrame) == true;
-    System.out.println("TestBowlingKataApplication.testParseScoreCardPerfectScore PASSED");
-  }
-
-
-  public void testParseScoreCardPerfectScoreFail() {
-    Frame frame = new Frame("X", null);
-    ArrayList<Frame> frameCollection = new ArrayList<>();
-
-    // Create a frame collection of a perfect score
-    for(int i = 0; i < 12; i++) {
-      frameCollection.add(frame);
-    }
-
-    // Call the method to parse the String with the score
-    ArrayList<Frame> parsedFrame = line.parseScoreCard(perfectScore.concat("X"));
-
-    // Assertion, check that both Lists contains the same elements
-    assert frameCollection.equals(parsedFrame) == false;
-    System.out.println("TestBowlingKataApplication.testParseScoreCardPerfectScoreFail PASSED");
-  }
-
-  // case not completed
-  public void testParseScoreCardNinetyScore(){
-    Frame frame = new Frame("9", "-");
-    ArrayList<Frame> frameCollection = new ArrayList<>();
-
-    // Create a frame collection of a perfect score
-    for(int i = 0; i < 12; i++) {
-      frameCollection.add(frame);
-    }
-
-    // Call the method to parse the String with the score
-    ArrayList<Frame> parsedFrame = line.parseScoreCard(ninetyScore);
-
-    // Assertion, check that both Lists contains the same elements
-    assert frameCollection.equals(parsedFrame) == true;
-    System.out.println("TestBowlingKataApplication.testParseScoreCardNinetyScore PASSED");
-  }
-
-
-  /*
-    This scenario covers the case when all the frames had a strike.
-  */
-  public void testPerfectScoreB() {
-    ArrayList<Frame> perfectScore = new ArrayList<>(Arrays.asList(frameStrike,frameStrike,frameStrike,frameStrike,frameStrike,
-        frameStrike,frameStrike,frameStrike,frameStrike,frameStrike));
-
-    assert line.sumFrames(perfectScore) == PERFECT_SCORE : "TestBowlingKataApplication.testPerfectScore FAILED";
-    System.out.println("TestBowlingKataApplication.testPerfectScore PASSED");
-  }
-
-  /*
-  This scenario covers the case when all the frames had a strike except the last.
-  */
-  public void testPerfectScoreFailB() {
-    ArrayList<Frame> perfectScore = new ArrayList<>(Arrays.asList(frameStrike,frameStrike,frameStrike,frameStrike,frameStrike,
-        frameStrike,frameStrike,frameStrike,frameStrike,new Frame("10","-")));
-
-    assert line.sumFrames(perfectScore) != PERFECT_SCORE;
-    System.out.println("TestBowlingKataApplication.testPerfectScoreFail PASSED");
-  }
-
-
 
 }

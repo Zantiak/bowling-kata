@@ -1,5 +1,8 @@
 package main;
 
+import java.util.Scanner;
+import main.domain.Line;
+
 public class BowlingKataApplication {
 
   /*
@@ -7,7 +10,13 @@ public class BowlingKataApplication {
   */
   public static void main(String[] args) {
 
-    BowlingKataApplication bkApp = new BowlingKataApplication();
+    Line line = new Line();
+
+    System.out.println("Provide a valid bowling scorecard");
+    Scanner scanner = new Scanner(System.in);
+    String scorecard = scanner.nextLine();
+
+    System.out.println("Line " + scorecard + " total score is: " + line.getLineTotalScore(scorecard));
 
   }
 }
